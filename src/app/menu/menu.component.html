@@ -1,0 +1,16 @@
+<button type="button" (click)="fetchDishes()">Get Dishes</button>
+
+<div>
+  <h2>Menu</h2>
+  <ul>
+    <li *ngFor="let dish of allDishes">
+      <h3>{{ dish.name }}</h3>
+      <p>Day: {{ dish.day }}</p>
+      <p>Dish ID: {{ dish._id }}</p>
+    </li>
+  </ul>
+</div>
+
+<button type="button" (click)="createDish()">Create Dish</button>
+<button type="button" (click)="updateDish()">Update Dish</button>
+<button type="button" (click)="deleteDish()">Delete Dish</button>
