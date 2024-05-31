@@ -1,28 +1,41 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { DishService } from '../services/dish.service';
 import { Dish } from '../models/Dish.model';
+import { OrderService } from '../services/order.service';
+import { Order } from '../models/Order.model';
+import { Subscription } from 'rxjs';
+import { InitializationService } from '../services/initialization.service';
+import { User } from '../models/User.model';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent implements OnInit, OnDestroy {
+  initializationService: InitializationService = inject(InitializationService);
   dishService: DishService = inject(DishService);
+  orderService: OrderService = inject(OrderService);
+
+  private userSub: Subscription | undefined;
+  currentUser: User | null = null;
   allDishes: Dish[] = [];
   errorMessage: string = '';
   name = 'Gari and Shito';
   day = 'tuesday';
 
   ngOnInit() {
-    this.fetchDishes();
-  }
-
-  fetchDishes() {
+    this.userSub = this.initializationService
+      .getCurrentUser()
+      .subscribe((user) => (this.currentUser = user));
     this.getAllDishes();
   }
 
-  private getAllDishes() {
+  ngOnDestroy(): void {
+    this.userSub?.unsubscribe();
+  }
+
+  getAllDishes() {
     this.dishService.GetAllDishes().subscribe({
       next: (data: Dish[]) => {
         this.allDishes = data;
@@ -68,6 +81,59 @@ export class MenuComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
+      },
+    });
+  }
+
+  //getAllOrders
+  getAllOrders() {
+    this.orderService.getAllOrders().subscribe({
+      next: (orders: Order[]) => {
+        console.log(orders);
+      },
+      error: (error) => {
+        console.log(error.error.message);
+      },
+    });
+  }
+
+  //createOrder
+  createOrder() {
+    const dish_id = '66570bcdaffb44b8535f0898';
+    let user_id = '';
+    if (this.currentUser) user_id = this.currentUser._id;
+
+    this.orderService.createOrder(dish_id, user_id).subscribe({
+      next: (order: Order) => {
+        console.log(order);
+      },
+      error: (error) => {
+        console.log(error.error.message);
+      },
+    });
+  }
+
+  //deleteOrder
+  deleteOrder() {
+    const order_id = '6655f04525a4ce5ee578d63c';
+
+    this.orderService.deleteOrder(order_id).subscribe({
+      next: () => {
+        console.log(' deleted order successfully');
+      },
+      error: (error) => {
+        console.log(error.error.message);
+      },
+    });
+  }
+
+  deleteAllOrders() {
+    this.orderService.deleteAllOrders().subscribe({
+      next: () => {
+        console.log(' deleted all order successfully');
+      },
+      error: (error) => {
+        console.log(error.error.message);
       },
     });
   }
