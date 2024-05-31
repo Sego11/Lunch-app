@@ -4,16 +4,18 @@ import { User } from '../models/User.model';
 import { InitializationService } from '../services/initialization.service';
 import { Subscription } from 'rxjs';
 import { TokenService } from '../services/token.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-auth',
-  templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css'],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
 })
-export class AuthComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy {
   authService: AuthService = inject(AuthService);
   tokenService: TokenService = inject(TokenService);
   initializationService: InitializationService = inject(InitializationService);
+  router: Router = inject(Router);
 
   errorMessage: string | null = '';
   user: User | null = null;
@@ -21,7 +23,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   userData = {
     name: 'desmond',
-    email: 'desmond@gmail.com',
+    email: 'sammybaffoe@gmail.com',
     password: 'Password123',
   };
 
@@ -31,7 +33,7 @@ export class AuthComponent implements OnInit, OnDestroy {
       .subscribe((user: User | null) => {
         if (user) {
           this.user = user;
-          //navigate to home
+          this.router.navigate(['main']);
         }
       });
   }
@@ -42,8 +44,9 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   signUp() {
     this.authService.signUp(this.userData).subscribe({
-      next: (data) => {
+      next: () => {
         //display a success message to the user and redirect to login
+        this.router.navigate(['']);
       },
       error: (error) => {
         console.log(error.error.message);
@@ -66,16 +69,12 @@ export class AuthComponent implements OnInit, OnDestroy {
         });
         this.initializationService.initializeApp();
         //navigate to home
+        this.router.navigate(['']);
       },
       error: (error) => {
         console.log(error);
         this.errorMessage = error.error.message;
       },
     });
-  }
-
-  logout() {
-    this.authService.logout();
-    console.log('logged out successfully');
   }
 }

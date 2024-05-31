@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { InitializationService } from './services/initialization.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +9,10 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  title = 'LUNCH-APP';
   initializationService: InitializationService = inject(InitializationService);
+  router: Router = inject(Router);
+
+  title = 'LUNCH-APP';
   userSub: Subscription | undefined;
 
   ngOnInit(): void {
@@ -19,6 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((user) => {
         if (!user) {
           //redirect to login
+          this.router.navigate(['']);
         }
       });
   }

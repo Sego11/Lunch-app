@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { Order } from '../models/Order.model';
+import { TokenService } from './token.service';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private tokenService: TokenService) {}
 
   baseUrl: string = 'http://localhost:3000/api/v1/';
 
@@ -21,6 +22,12 @@ export class OrderService {
       );
   }
 
+  getOrder(id: string): Observable<Order> {
+    return this.http
+      .get<{ data: { order: Order } }>(`${this.baseUrl}orders/get-order/${id}`)
+      .pipe(map((res) => res.data.order as Order));
+  }
+
   createOrder(dish_id: string, user_id: string): Observable<Order> {
     const orderData = {
       dish: dish_id,
@@ -32,14 +39,23 @@ export class OrderService {
         `${this.baseUrl}orders/create-order/`,
         orderData
       )
-      .pipe(map((response) => response.data.order as Order));
+      .pipe(
+        map((response) => {
+          const order: Order = response.data.order;
+          this.tokenService.setOrderDetails(order);
+          return order;
+        }),
+        catchError((error) => {
+          return throwError(() => error);
+        })
+      );
   }
 
   deleteOrder(id: string) {
     return this.http.delete(`${this.baseUrl}orders/delete-order/${id}`);
   }
 
-  deleteAllOrders(){
-    return this.http.delete(`${this.baseUrl}orders/delete-all-orders/`)
+  deleteAllOrders() {
+    return this.http.delete(`${this.baseUrl}orders/delete-all-orders/`);
   }
 }

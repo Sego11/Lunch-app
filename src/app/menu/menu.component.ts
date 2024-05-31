@@ -22,8 +22,6 @@ export class MenuComponent implements OnInit, OnDestroy {
   currentUser: User | null = null;
   allDishes: Dish[] = [];
   errorMessage: string = '';
-  name = 'Gari and Shito';
-  day = 'tuesday';
   currentDayName = '';
 
   ngOnInit() {
@@ -50,90 +48,15 @@ export class MenuComponent implements OnInit, OnDestroy {
     });
   }
 
-  //declare a template variable and add ngForm to it
-  //use the @ViewChild() to get the instance of the form
-  //to get the user inputs in the form
-
-  createDish() {
-    this.dishService.CreateDish(this.name, this.day).subscribe({
-      next: (dish: Dish) => {
-        console.log(dish);
-      },
-      error: (error) => {
-        console.log(error.error.message);
-      },
-    });
-  }
-
-  id = '6657516f7e2ea46673f07be9';
-  updateDish() {
-    this.dishService.UpdateDish(this.id, this.name).subscribe({
-      next: (data: Dish) => {
-        console.log(data);
-      },
-      error: (error) => {
-        console.log(error.error.message);
-      },
-    });
-  }
-
-  deleteDish() {
-    this.dishService.DeleteDish(this.id).subscribe({
-      next: (data) => {
-        console.log(data);
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
-  }
-
-  //getAllOrders
-  getAllOrders() {
-    this.orderService.getAllOrders().subscribe({
-      next: (orders: Order[]) => {
-        console.log(orders);
-      },
-      error: (error) => {
-        console.log(error.error.message);
-      },
-    });
-  }
-
   //createOrder
   createOrder() {
-    const dish_id = '66570bcdaffb44b8535f0898';
+    const dish_id = '6655ef2dc9decabdcebf6b33';
     let user_id = '';
     if (this.currentUser) user_id = this.currentUser._id;
 
     this.orderService.createOrder(dish_id, user_id).subscribe({
       next: (order: Order) => {
         console.log(order);
-      },
-      error: (error) => {
-        console.log(error.error.message);
-      },
-    });
-  }
-
-  //deleteOrder
-  deleteOrder() {
-    const order_id = '6655f04525a4ce5ee578d63c';
-
-    this.orderService.deleteOrder(order_id).subscribe({
-      next: () => {
-        console.log(' deleted order successfully');
-      },
-      error: (error) => {
-        console.log(error.error.message);
-      },
-    });
-  }
-
-  deleteAllOrders() {
-    this.orderService.deleteAllOrders().subscribe({
-      next: () => {
-        console.log(' deleted all order successfully');
       },
       error: (error) => {
         console.log(error.error.message);
