@@ -6,6 +6,7 @@ import { Order } from '../models/Order.model';
 import { Subscription } from 'rxjs';
 import { InitializationService } from '../services/initialization.service';
 import { User } from '../models/User.model';
+import { getTodayName } from '../utils/get.current.day';
 
 @Component({
   selector: 'app-menu',
@@ -23,11 +24,13 @@ export class MenuComponent implements OnInit, OnDestroy {
   errorMessage: string = '';
   name = 'Gari and Shito';
   day = 'tuesday';
+  currentDayName = '';
 
   ngOnInit() {
     this.userSub = this.initializationService
       .getCurrentUser()
       .subscribe((user) => (this.currentUser = user));
+    this.currentDayName = getTodayName(new Date());
     this.getAllDishes();
   }
 
@@ -36,7 +39,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   getAllDishes() {
-    this.dishService.GetAllDishes().subscribe({
+    this.dishService.GetAllDishes(this.currentDayName).subscribe({
       next: (data: Dish[]) => {
         this.allDishes = data;
       },

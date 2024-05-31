@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Dish } from '../models/Dish.model';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -13,8 +13,11 @@ export class DishService {
   http: HttpClient = inject(HttpClient);
 
   //get all dishes
-  GetAllDishes(): Observable<Dish[]> {
-    return this.http.get<any>(`${this.baseUrl}dishes`).pipe(
+  GetAllDishes(day?: string): Observable<Dish[]> {
+    let params = new HttpParams();
+    if (day) params = params.append('day', day);
+
+    return this.http.get<any>(`${this.baseUrl}dishes`, { params }).pipe(
       map((response) => {
         return response.data.dishes as Dish[];
       }),
