@@ -3,18 +3,15 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { Order } from '../models/Order.model';
 import { TokenService } from './token.service';
+import { baseUrl } from '../utils/utils';
 
 @Injectable({ providedIn: 'root' })
 export class OrderService {
   constructor(private http: HttpClient, private tokenService: TokenService) {}
 
-  baseUrl: string = 'http://localhost:3000/api/v1/';
-
   getAllOrders(): Observable<Order[]> {
     return this.http
-      .get<{ data: { orders: Order[] } }>(
-        `${this.baseUrl}orders/get-all-orders/`
-      )
+      .get<{ data: { orders: Order[] } }>(`${baseUrl}orders/get-all-orders/`)
       .pipe(
         map((response) => {
           return response.data.orders as Order[];
@@ -22,9 +19,10 @@ export class OrderService {
       );
   }
 
-  getOrder(id: string): Observable<Order> {
+  getOrder(user: string): Observable<Order> {
+    const data = { user: user };
     return this.http
-      .get<{ data: { order: Order } }>(`${this.baseUrl}orders/get-order/${id}`)
+      .post<{ data: { order: Order } }>(`${baseUrl}orders/get-order/`, data)
       .pipe(map((res) => res.data.order as Order));
   }
 
@@ -36,13 +34,12 @@ export class OrderService {
 
     return this.http
       .post<{ data: { order: Order } }>(
-        `${this.baseUrl}orders/create-order/`,
+        `${baseUrl}orders/create-order/`,
         orderData
       )
       .pipe(
         map((response) => {
           const order: Order = response.data.order;
-          this.tokenService.setOrderDetails(order);
           return order;
         }),
         catchError((error) => {
@@ -52,10 +49,10 @@ export class OrderService {
   }
 
   deleteOrder(id: string) {
-    return this.http.delete(`${this.baseUrl}orders/delete-order/${id}`);
+    return this.http.delete(`${baseUrl}orders/delete-order/${id}`);
   }
 
   deleteAllOrders() {
-    return this.http.delete(`${this.baseUrl}orders/delete-all-orders/`);
+    return this.http.delete(`${baseUrl}orders/delete-all-orders/`);
   }
 }

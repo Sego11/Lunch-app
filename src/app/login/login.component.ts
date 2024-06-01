@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   userData = {
     name: 'desmond',
-    email: 'sammybaffoe@gmail.com',
+    email: 'raymond@gmail.com',
     password: 'Password123',
   };
 
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.authService.signUp(this.userData).subscribe({
       next: () => {
         //display a success message to the user and redirect to login
-        this.router.navigate(['']);
+        this.router.navigate(['login']);
       },
       error: (error) => {
         console.log(error.error.message);

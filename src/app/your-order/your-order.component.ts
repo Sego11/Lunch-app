@@ -1,46 +1,61 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { OrderService } from '../services/order.service';
 import { Order } from '../models/Order.model';
 import { TokenService } from '../services/token.service';
+import { InitializationService } from '../services/initialization.service';
+import { Subscription } from 'rxjs';
+import { User } from '../models/User.model';
 
 @Component({
   selector: 'app-your-order',
   templateUrl: './your-order.component.html',
   styleUrls: ['./your-order.component.css'],
 })
-export class YourOrderComponent implements OnInit {
+export class YourOrderComponent implements OnInit, OnDestroy {
   orderService: OrderService = inject(OrderService);
   tokenService: TokenService = inject(TokenService);
+  initializationService: InitializationService = inject(InitializationService);
 
-  savedOrder: Order | null = this.tokenService.getOrderDetails();
-  order_id: string | undefined = this.savedOrder?._id;
-  orderToRender: Order | null = null;
+  order: Order | null = null;
+  userSub: Subscription | undefined;
+  currentUser: User | null = null;
 
   ngOnInit(): void {
+    this.userSub = this.initializationService
+      .getCurrentUser()
+      .subscribe((user) => {
+        this.currentUser = user;
+      });
     this.getUserOrder();
   }
 
-  //getUserOrder
-  //store in the order variable
+  ngOnDestroy() {
+    this.userSub?.unsubscribe();
+  }
+
   getUserOrder() {
-    if (this.order_id)
-      this.orderService.getOrder(this.order_id).subscribe({
+    const user_id = this.currentUser?._id;
+    if (user_id) {
+      this.orderService.getOrder(user_id).subscribe({
         next: (order: Order) => {
-          this.orderToRender = order;
+          this.order = order;
         },
         error: (error) => {
           console.log(error.error.message);
         },
       });
+    } else {
+      console.log('cannot read id');
+    }
   }
 
   //deleteOrder
   deleteOrder() {
-    if (this.order_id)
-      this.orderService.deleteOrder(this.order_id).subscribe({
+    if (this.order)
+      this.orderService.deleteOrder(this.order._id).subscribe({
         next: () => {
           console.log(' deleted order successfully');
-          this.tokenService.removeOrderDetails();
+          this.order = null;
         },
         error: (error) => {
           console.log(error.error.message);

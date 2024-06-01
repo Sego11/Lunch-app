@@ -3,13 +3,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Dish } from '../models/Dish.model';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { baseUrl } from '../utils/utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DishService {
-  baseUrl: string = 'http://localhost:3000/api/v1/';
-
   http: HttpClient = inject(HttpClient);
 
   //get all dishes
@@ -17,7 +16,7 @@ export class DishService {
     let params = new HttpParams();
     if (day) params = params.append('day', day);
 
-    return this.http.get<any>(`${this.baseUrl}dishes`, { params }).pipe(
+    return this.http.get<any>(`${baseUrl}dishes`, { params }).pipe(
       map((response) => {
         return response.data.dishes as Dish[];
       }),
@@ -34,7 +33,7 @@ export class DishService {
       day: day,
     };
 
-    return this.http.post<any>(`${this.baseUrl}dishes`, data).pipe(
+    return this.http.post<any>(`${baseUrl}dishes`, data).pipe(
       catchError((err) => {
         return throwError(() => err);
       })
@@ -48,7 +47,7 @@ export class DishService {
       day: day,
     };
 
-    return this.http.patch<any>(`${this.baseUrl}dishes/${id}`, data).pipe(
+    return this.http.patch<any>(`${baseUrl}dishes/${id}`, data).pipe(
       catchError((err) => {
         return throwError(() => err);
       })
@@ -57,7 +56,7 @@ export class DishService {
 
   //delete dish
   DeleteDish(id: string) {
-    return this.http.delete<any>(`${this.baseUrl}dishes/${id}`).pipe(
+    return this.http.delete<any>(`${baseUrl}dishes/${id}`).pipe(
       catchError((err) => {
         return throwError(() => err);
       })

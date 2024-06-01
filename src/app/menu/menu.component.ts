@@ -6,7 +6,7 @@ import { Order } from '../models/Order.model';
 import { Subscription } from 'rxjs';
 import { InitializationService } from '../services/initialization.service';
 import { User } from '../models/User.model';
-import { getTodayName } from '../utils/get.current.day';
+import { getTodayName } from '../utils/utils';
 
 @Component({
   selector: 'app-menu',
@@ -50,7 +50,7 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   //createOrder
   createOrder() {
-    const dish_id = '6655ef2dc9decabdcebf6b33';
+    const dish_id = '6655f04525a4ce5ee578d63c';
     let user_id = '';
     if (this.currentUser) user_id = this.currentUser._id;
 

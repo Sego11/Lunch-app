@@ -6,7 +6,6 @@ import { Order } from '../models/Order.model';
 export class TokenService {
   private tokenKey = 'authToken';
   private userKey = 'userDetails';
-  private orderKey = 'orderDetails';
 
   setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
@@ -45,18 +44,5 @@ export class TokenService {
   isTokenExpired(token: string): boolean {
     const expirationDate = this.getTokenExpirationDate(token);
     return expirationDate ? expirationDate < new Date() : true;
-  }
-
-  setOrderDetails(order: Order): void {
-    localStorage.setItem(this.orderKey, JSON.stringify(order));
-  }
-
-  getOrderDetails(): any {
-    const order = localStorage.getItem(this.orderKey);
-    return order ? JSON.parse(order) : null;
-  }
-
-  removeOrderDetails() {
-    localStorage.removeItem(this.orderKey);
   }
 }
