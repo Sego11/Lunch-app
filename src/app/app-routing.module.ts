@@ -7,6 +7,7 @@ import { YourOrderComponent } from './your-order/your-order.component';
 import { MenuComponent } from './menu/menu.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { MainComponent } from './main/main.component';
+import { canActivate } from './routeGuards/admin.guard';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -16,7 +17,7 @@ const routes: Routes = [
     children: [
       { path: '', component: HomeComponent },
       { path: 'home', component: HomeComponent },
-      { path: 'admin', component: AdminComponent },
+      { path: 'admin', component: AdminComponent, canActivate: [canActivate] },
       { path: 'order', component: YourOrderComponent },
       { path: 'menu', component: MenuComponent },
     ],
