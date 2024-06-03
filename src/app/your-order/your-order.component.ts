@@ -38,6 +38,7 @@ export class YourOrderComponent implements OnInit, OnDestroy {
     if (user_id) {
       this.orderService.getOrder(user_id).subscribe({
         next: (order: Order) => {
+          console.log(order);
           this.order = order;
         },
         error: (error) => {

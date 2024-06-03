@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { Order } from '../models/Order.model';
@@ -20,10 +20,14 @@ export class OrderService {
   }
 
   getOrder(user: string): Observable<Order> {
-    const data = { user: user };
+    let params = new HttpParams();
+    params = params.append('user', user);
+
     return this.http
-      .post<{ data: { order: Order } }>(`${baseUrl}orders/get-order/`, data)
-      .pipe(map((res) => res.data.order as Order));
+      .get<{ data: { userOrder: Order } }>(`${baseUrl}orders/get-order/`, {
+        params,
+      })
+      .pipe(map((res) => res.data.userOrder as Order));
   }
 
   createOrder(dish_id: string, user_id: string): Observable<Order> {

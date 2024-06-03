@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   userData = {
     name: 'desmond',
-    email: 'raymond@gmail.com',
+    email: 'desmond@gmail.com',
     password: 'Password123',
   };
 
@@ -64,6 +64,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.tokenService.setToken(token);
         this.authService.fetchUserDetails().subscribe({
           next: (user: User) => {
+            console.log('loggedIn user: ', user.name);
             this.tokenService.setUserDetails(user);
           },
         });
