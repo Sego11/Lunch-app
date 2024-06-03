@@ -1,7 +1,12 @@
-<nav>
-  <a routerLink="home">HOME</a>
-  <a routerLink="menu">MENU</a>
-  <a routerLink="order">YOUR ORDER</a>
-  <a routerLink="admin">ADMIN</a>
-  <a href="" (click)="logout()">LOGOUT</a>
+<nav class="navbar">
+  <div class="navbar-brand">
+    <img src="assets/nasco.png" alt="NASCOTECH LOGO" />
+  </div>
+  <ul class="navbar-menu">
+    <li><a routerLink="home">HOME</a></li>
+    <li><a routerLink="menu">MENU</a></li>
+    <li><a routerLink="order">YOUR ORDER</a></li>
+    <li><a routerLink="admin">ADMIN</a></li>
+    <li><a href="" (click)="logout()">LOGOUT</a></li>
+  </ul>
 </nav>

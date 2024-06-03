@@ -19,7 +19,7 @@
   .login-container h2 {
     margin-bottom: 20px;
     text-align: left;
-    color:  #16192A;
+    color:  #0e0e41;
     font-weight: bolder;
   }
   
@@ -38,7 +38,7 @@
   }
   
   .form-group input:focus{
-  border-color:#16192A;
+  border-color:#0e0e41;
   outline: none;
   }
 
@@ -46,7 +46,7 @@
   button {
     width: 100%;
     padding: 10px;
-    background-color: #16192A;
+    background-color: #0e0e41;
     color: white;
     border: none;
     border-radius: 5px;
@@ -68,7 +68,7 @@
   }
   
   a {
-    color: #16192A;
+    color: #0e0e41;
     font-weight: bold;
     text-decoration: none;
   }
