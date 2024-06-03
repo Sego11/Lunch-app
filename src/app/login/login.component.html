@@ -1,2 +1,54 @@
-<button type="button" (click)="signUp()">Create Account</button>
-<button type="button" (click)="login()">Login</button>
+<app-toast
+  [show]="showToast"
+  [message]="toastMessage"
+  [isSuccess]="isToastSuccess"
+></app-toast>
+<div class="container">
+  <div class="login-container">
+    <h2>{{ isLogin ? "Login" : "Register Here" }}</h2>
+    <form autocomplete="off" (ngSubmit)="onFormSubmitted($event)">
+      <div class="form-group" *ngIf="!isLogin">
+        <input
+          type="name"
+          id="name"
+          placeholder="Name"
+          autocomplete="off"
+          [(ngModel)]="name"
+          name="name"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          type="email"
+          id="email"
+          placeholder="Email"
+          autocomplete="off"
+          [(ngModel)]="email"
+          name="email"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          type="password"
+          id="password"
+          placeholder="Password"
+          autocomplete="off"
+          [(ngModel)]="password"
+          name="password"
+        />
+      </div>
+      <button type="submit" [disabled]="isLoading">
+        <span *ngIf="!isLoading">
+          {{ isLogin ? "Login" : "Sign up" }}
+        </span>
+        <app-spinner *ngIf="isLoading"></app-spinner>
+      </button>
+      <p>
+        {{ isLogin ? "Don't have an account?" : "Already have an account?" }}
+        <a href="#" (click)="toggleView($event)">{{
+          isLogin ? "Sign up" : "Login"
+        }}</a>
+      </p>
+    </form>
+  </div>
+</div>

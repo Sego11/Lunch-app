@@ -20,7 +20,7 @@ export class AuthService {
     role?: string;
   }) {
     return this.http.post<{ data: { user: User } }>(
-      `${baseUrl}auth/signUp`,
+      `${baseUrl}auth/signup`,
       userData
     );
   }

@@ -11,71 +11,110 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
   authService: AuthService = inject(AuthService);
   tokenService: TokenService = inject(TokenService);
   initializationService: InitializationService = inject(InitializationService);
   router: Router = inject(Router);
 
-  errorMessage: string | null = '';
-  user: User | null = null;
-  private userSubject: Subscription | undefined;
+  isLogin: boolean = true;
+  isLoading: boolean = false;
+  name: string = '';
+  email: string = '';
+  password: string = '';
+  showToast: boolean = false;
+  toastMessage: string = '';
+  isToastSuccess: boolean = true;
 
-  userData = {
-    name: 'desmond',
-    email: 'desmond@gmail.com',
-    password: 'Password123',
-  };
+  toggleView(event: Event) {
+    event.preventDefault();
+    this.isLogin = !this.isLogin;
+  }
+
+  onFormSubmitted(event: Event): void {
+    if (this.isLogin) {
+      console.log(this.password);
+      this.login();
+    } else {
+      this.signUp();
+    }
+  }
 
   ngOnInit(): void {
-    this.userSubject = this.initializationService
+    this.initializationService
       .getCurrentUser()
       .subscribe((user: User | null) => {
         if (user) {
-          this.user = user;
           this.router.navigate(['main']);
         }
       });
   }
 
-  ngOnDestroy() {
-    this.userSubject?.unsubscribe();
-  }
-
   signUp() {
-    this.authService.signUp(this.userData).subscribe({
+    const userData = {
+      name: this.name,
+      email: this.email,
+      password: this.password,
+    };
+
+    this.isLoading = true;
+
+    this.authService.signUp(userData).subscribe({
       next: () => {
-        //display a success message to the user and redirect to login
-        this.router.navigate(['login']);
+        setTimeout(() => {
+          this.isLoading = false;
+          this.showToastMessage(
+            `Account successfully created. Login to proceed`,
+            true
+          );
+        }, 2000);
+
+        this.isLogin = true;
       },
       error: (error) => {
-        console.log(error.error.message);
+        setTimeout(() => {
+          this.isLoading = false;
+          this.showToastMessage(error.error.message, false);
+        }, 2000);
       },
     });
   }
 
   login() {
     const userData = {
-      email: this.userData.email,
-      password: this.userData.password,
+      email: this.email,
+      password: this.password,
     };
+
+    this.isLoading = true;
+
     this.authService.login(userData).subscribe({
       next: (token) => {
         this.tokenService.setToken(token);
         this.authService.fetchUserDetails().subscribe({
           next: (user: User) => {
-            console.log('loggedIn user: ', user.name);
             this.tokenService.setUserDetails(user);
           },
         });
         this.initializationService.initializeApp();
-        //navigate to home
         this.router.navigate(['']);
       },
       error: (error) => {
-        console.log(error);
-        this.errorMessage = error.error.message;
+        setTimeout(() => {
+          this.isLoading = false;
+          this.showToastMessage(error.error.message, false);
+        }, 2000);
       },
     });
+  }
+
+  showToastMessage(message: string, isSuccess: boolean) {
+    this.toastMessage = message;
+    this.isToastSuccess = isSuccess;
+    this.showToast = true;
+
+    setTimeout(() => {
+      this.showToast = false;
+    }, 3000);
   }
 }

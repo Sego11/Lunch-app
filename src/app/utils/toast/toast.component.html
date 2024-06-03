@@ -1,0 +1,13 @@
+<div
+  class="toast"
+  *ngIf="show"
+  [ngClass]="{ success: isSuccess, error: !isSuccess }"
+>
+  <div class="toast-icon">
+    <span *ngIf="isSuccess">&#10004;</span>
+    <span *ngIf="!isSuccess">&#10060;</span>
+  </div>
+  <div class="toast-message">
+    {{ message }}
+  </div>
+</div>

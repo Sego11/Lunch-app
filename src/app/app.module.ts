@@ -16,6 +16,8 @@ import { YourOrderComponent } from './your-order/your-order.component';
 import { CreateDishComponent } from './admin/create-dish/create-dish.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { MainComponent } from './main/main.component';
+import { SpinnerComponent } from './utils/spinner/spinner.component';
+import { ToastComponent } from './utils/toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,8 @@ import { MainComponent } from './main/main.component';
     CreateDishComponent,
     NotFoundComponent,
     MainComponent,
+    SpinnerComponent,
+    ToastComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [
