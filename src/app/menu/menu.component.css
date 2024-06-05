@@ -1,0 +1,113 @@
+
+.menu-container{
+    padding: 20px 100px;
+}
+
+hr{
+    border: #dedede 1.5px solid;
+}
+
+.menu-container-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.menu-container-header-name h2{
+    color:  #0e0e41;
+    font-weight: bolder;
+}
+
+.menu-container-header-button{
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #0e0e41;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.menu-container-header-button:hover {
+    background-color: #333;
+}
+
+.menu-item-container{
+    margin-top: 30px;
+    padding: 30px 50px;
+    border: #dedede 1.5px solid;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    min-height: 300px;
+}
+
+.your-order-container{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.spinner-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.dish-card {
+    width: 20%;
+    margin: 10px 50px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: transform 0.2s;
+   
+}
+
+.dish-card:hover {
+    transform: scale(1.05);
+}
+
+.dish-card-image {
+    height: 160px;
+    background-size:cover;
+    background-position: center;
+}
+
+.dish-card-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.dish-card-name {
+    font-size: 15px;
+    color: #0e0e41;
+}
+
+.order-button {
+    width: 50%;
+    height: 40px;
+    padding: 10px;
+    background-color: #0e0e41;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+
+}
+
+.order-button:hover {
+    background-color: #333;
+}

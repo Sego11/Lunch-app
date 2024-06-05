@@ -1,0 +1,14 @@
+<div class="your-order-card">
+  <app-spinner *ngIf="isLoading"></app-spinner>
+  <div class="dish-name">
+    <span *ngIf="!isLoading"
+      >{{ hasOrdered ? order?.dish?.name : "No Food Ordered" }}
+    </span>
+  </div>
+  <button type="button" class="delete-button" (click)="deleteOrder()">
+    Delete
+  </button>
+  <button type="button" class="close-button" (click)="onCloseOrderCard()">
+    &times;
+  </button>
+</div>

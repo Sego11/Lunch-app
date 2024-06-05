@@ -25,6 +25,12 @@ export class LoginComponent implements OnInit {
   showToast: boolean = false;
   toastMessage: string = '';
   isToastSuccess: boolean = true;
+  passwordFieldType: string = 'password';
+
+  togglePasswordVisibility() {
+    this.passwordFieldType =
+      this.passwordFieldType === 'password' ? 'text' : 'password';
+  }
 
   toggleView(event: Event) {
     event.preventDefault();

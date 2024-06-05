@@ -1,11 +1,54 @@
-<div>
-  <h2>Menu</h2>
-  <ul>
-    <li *ngFor="let dish of allDishes">
-      <h3>{{ dish.name }}</h3>
-      <p>Day: {{ dish.day }}</p>
-      <p>Dish ID: {{ dish._id }}</p>
-    </li>
-  </ul>
+<div class="menu-container">
+  <div class="menu-container-header">
+    <div class="menu-container-header-name">
+      <h2>{{ currentDayName.toUpperCase() + " DISH(ES)" }}</h2>
+    </div>
+    <div>
+      <button
+        type="button"
+        class="menu-container-header-button"
+        (click)="openOrderCard()"
+      >
+        Your Order
+      </button>
+    </div>
+  </div>
+
+  <hr />
+  <div class="your-order-container" *ngIf="isOrderButtonPressed">
+    <app-your-order (closeOrderCard)="onCloseOrderCard()"></app-your-order>
+  </div>
+
+  <div class="menu-item-container">
+    <app-toast
+      [show]="showToast"
+      [message]="toastMessage"
+      [isSuccess]="isToastSuccess"
+    ></app-toast>
+
+    <div class="spinner-container" *ngIf="fetchingDishes">
+      <app-spinner [smallSpinner]="false"></app-spinner>
+    </div>
+    <ng-container *ngIf="!fetchingDishes">
+      <div class="dish-card" *ngFor="let dish of allDishes">
+        <img
+          class="dish-card-image"
+          src="assets/image.png"
+          alt="Food Image Here"
+        />
+        <div class="dish-card-content">
+          <h3 class="dish-card-name">{{ dish.name }}</h3>
+          <button
+            type="button"
+            class="order-button"
+            (click)="createOrder(dish._id)"
+            [disabled]="isDishLoading(dish._id)"
+          >
+            <span *ngIf="!isDishLoading(dish._id)">Order Now </span>
+            <app-spinner *ngIf="isDishLoading(dish._id)"></app-spinner>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </div>
 </div>
-<button type="button" (click)="createOrder()">Create Order</button>

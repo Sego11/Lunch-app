@@ -3,7 +3,7 @@ import { DishService } from '../services/dish.service';
 import { Dish } from '../models/Dish.model';
 import { OrderService } from '../services/order.service';
 import { Order } from '../models/Order.model';
-import { Subscription } from 'rxjs';
+import { Subscription, retry } from 'rxjs';
 import { InitializationService } from '../services/initialization.service';
 import { User } from '../models/User.model';
 import { getTodayName } from '../utils/utils';
@@ -21,8 +21,14 @@ export class MenuComponent implements OnInit, OnDestroy {
   private userSub: Subscription | undefined;
   currentUser: User | null = null;
   allDishes: Dish[] = [];
-  errorMessage: string = '';
   currentDayName = '';
+  dish_id: string = '';
+  showToast: boolean = false;
+  toastMessage: string = '';
+  isToastSuccess: boolean = true;
+  fetchingDishes: boolean = false;
+  isOrderButtonPressed: boolean = false;
+  loadingDishIds: Set<string> = new Set();
 
   ngOnInit() {
     this.userSub = this.initializationService
@@ -37,30 +43,68 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   getAllDishes() {
+    this.fetchingDishes = true;
     this.dishService.GetAllDishes(this.currentDayName).subscribe({
       next: (data: Dish[]) => {
+        this.fetchingDishes = false;
         this.allDishes = data;
       },
       error: (error) => {
-        this.errorMessage = error.error.message;
-        console.log(this.errorMessage);
+        setTimeout(() => {
+          this.fetchingDishes = false;
+          this.showToastMessage(error.error.message, false);
+        }, 2000);
       },
     });
   }
 
-  //createOrder
-  createOrder() {
-    const dish_id = '6655f04525a4ce5ee578d63c';
-    let user_id = '';
-    if (this.currentUser) user_id = this.currentUser._id;
+  createOrder(id: string) {
+    this.loadingDishIds.add(id);
+    this.dish_id = id;
+    if (this.currentUser)
+      this.orderService
+        .createOrder(this.dish_id, this.currentUser._id)
+        .subscribe({
+          next: (order: Order) => {
+            console.log(order);
+            setTimeout(() => {
+              this.loadingDishIds.delete(id);
 
-    this.orderService.createOrder(dish_id, user_id).subscribe({
-      next: (order: Order) => {
-        console.log(order);
-      },
-      error: (error) => {
-        console.log(error.error.message);
-      },
-    });
+              this.showToastMessage(
+                'Order successfully made. check your orders to see your order',
+                true
+              );
+            }, 2000);
+          },
+          error: (error) => {
+            setTimeout(() => {
+              this.loadingDishIds.delete(id);
+              this.showToastMessage(error.error.message, false);
+            }, 2000);
+            console.log(error.error.message);
+          },
+        });
+  }
+
+  showToastMessage(message: string, isSuccess: boolean) {
+    this.toastMessage = message;
+    this.isToastSuccess = isSuccess;
+    this.showToast = true;
+
+    setTimeout(() => {
+      this.showToast = false;
+    }, 3000);
+  }
+
+  openOrderCard() {
+    this.isOrderButtonPressed = true;
+  }
+
+  onCloseOrderCard() {
+    this.isOrderButtonPressed = false;
+  }
+
+  isDishLoading(id: string): boolean {
+    return this.loadingDishIds.has(id);
   }
 }

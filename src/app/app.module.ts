@@ -12,7 +12,7 @@ import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { AdminComponent } from './admin/admin.component';
 import { HomeComponent } from './home/home.component';
-import { YourOrderComponent } from './your-order/your-order.component';
+import { YourOrderComponent } from './menu/your-order/your-order.component';
 import { CreateDishComponent } from './admin/create-dish/create-dish.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { MainComponent } from './main/main.component';
