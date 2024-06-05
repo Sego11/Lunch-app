@@ -16,19 +16,26 @@ export class AdminComponent implements OnInit {
   ) {}
 
   allOrders: Order[] = [];
-  name = 'Gari and Shito';
-  day = 'tuesday';
+  allDishes: Dish[] = [];
+  name = '';
+  day = '';
+  fetchingDishes: boolean = false;
+  fetchingOrders: boolean = false;
 
   ngOnInit(): void {
     this.getAllOrders();
+    this.getAllDishes();
   }
 
   getAllOrders() {
+    this.fetchingOrders = true;
     this.orderService.getAllOrders().subscribe({
       next: (orders: Order[]) => {
+        this.fetchingOrders = false;
         this.allOrders = orders;
       },
       error: (error) => {
+        this.fetchingOrders = false;
         console.log(error.error.message);
       },
     });
@@ -45,6 +52,20 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  getAllDishes() {
+    this.fetchingDishes = true;
+    this.dishService.GetAllDishes().subscribe({
+      next: (dishes: Dish[]) => {
+        this.fetchingDishes = false;
+        this.allDishes = dishes;
+      },
+      error: (error) => {
+        this.fetchingDishes = false;
+        console.log(error.error.message);
+      },
+    });
+  }
+
   createDish() {
     this.dishService.CreateDish(this.name, this.day).subscribe({
       next: (dish: Dish) => {
@@ -56,9 +77,8 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  id = '6657516f7e2ea46673f07be9';
-  updateDish() {
-    this.dishService.UpdateDish(this.id, this.name).subscribe({
+  updateDish(id: string) {
+    this.dishService.UpdateDish(id, this.name).subscribe({
       next: (data: Dish) => {
         console.log(data);
       },
@@ -68,8 +88,8 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  deleteDish() {
-    this.dishService.DeleteDish(this.id).subscribe({
+  deleteDish(id: string) {
+    this.dishService.DeleteDish(id).subscribe({
       next: (data) => {
         console.log(data);
       },

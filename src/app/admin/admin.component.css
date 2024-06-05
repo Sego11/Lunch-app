@@ -1,0 +1,136 @@
+.admin-container{
+    padding: 20px 100px;
+}
+
+hr{
+    border: #dedede 1.5px solid;
+}
+
+
+.admin-container-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+}
+
+.admin-container-header-name h2{
+    color:  #0e0e41;
+    font-weight: bolder;
+}
+
+.admin-container-header-button{
+    margin-top: 15px;
+    margin-right: 15px;
+    padding: 10px 20px;
+    background-color: #0e0e41;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.admin-container-header-button:hover {
+    background-color: #333;
+}
+
+.admin-dish-container{
+    margin-top: 30px;
+    padding: 30px 50px;
+    border: #dedede 1.5px solid;
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    min-height: 100px;
+}
+
+.dish-card {
+    width: 20%;
+    margin: 10px 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: transform 0.2s;
+}
+
+.dish-card:hover {
+    transform: scale(1.05);
+}
+
+.dish-card-name {
+    font-size: 15px;
+    color: #0e0e41;
+}
+
+.dish-card-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.dish-card-button{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.dish-card-button button{
+    width: 48%;
+    height: 40px;
+    padding: 10px;
+    background-color: #0e0e41;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+
+}
+
+.dish-card-button button:hover {
+    background-color: #333;
+}
+
+.your-order-card {
+    display: block;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 5px 10px 20px;
+    margin: 10px 10px;
+    border: 1.5px solid #dedede;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    margin-bottom: 10px;
+    width: 20%; 
+    min-width: 300px;
+  }
+
+  .your-order-card:hover {
+    transform: scale(1.05);
+}
+
+
+  .person-name{
+    font-size: 15px;
+    color: #0e0e41;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+
+  .dish-name {
+    font-size: 18px;
+    color: #0e0e41;
+    font-weight: bold;
+  }
+
+  .spinner-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}

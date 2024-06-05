@@ -66,7 +66,6 @@ export class MenuComponent implements OnInit, OnDestroy {
         .createOrder(this.dish_id, this.currentUser._id)
         .subscribe({
           next: (order: Order) => {
-            console.log(order);
             setTimeout(() => {
               this.loadingDishIds.delete(id);
 

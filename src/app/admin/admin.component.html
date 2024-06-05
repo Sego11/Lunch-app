@@ -1,15 +1,45 @@
-<div>
-  <h2>Menu</h2>
-  <ul>
-    <li *ngFor="let order of allOrders">
-      <h3>{{ order._id }}</h3>
-      <p>Name: {{ order.user.name }}</p>
-      <p>foodOrdered: {{ order.dish.name }}</p>
-    </li>
-  </ul>
-</div>
+<div class="admin-container">
+  <div class="admin-container-header">
+    <div class="admin-container-header-name">
+      <h2>Admin Dashboard</h2>
+    </div>
+    <div>
+      <button type="button" class="admin-container-header-button">
+        Create Dish
+      </button>
+      <button type="button" class="admin-container-header-button">
+        Clear Orders
+      </button>
+    </div>
+  </div>
+  <hr />
+  <div class="admin-dish-container">
+    <div class="spinner-container" *ngIf="fetchingDishes">
+      <app-spinner [smallSpinner]="false"></app-spinner>
+    </div>
+    <ng-container *ngIf="!fetchingDishes">
+      <div class="dish-card" *ngFor="let dish of allDishes">
+        <div class="dish-card-content">
+          <h3 class="dish-card-day">{{ dish.day }}</h3>
+          <h3 class="dish-card-name">{{ dish.name }}</h3>
+          <div class="dish-card-button">
+            <button type="button">Edit Dish</button>
+            <button type="button">Delete Dish</button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
 
-<button type="button" (click)="deleteAllOrders()">Delete All Orders</button>
-<button type="button" (click)="createDish()">Create Dish</button>
-<button type="button" (click)="updateDish()">Update Dish</button>
-<button type="button" (click)="deleteDish()">Delete Dish</button>
+  <div class="admin-dish-container">
+    <div class="spinner-container" *ngIf="fetchingOrders">
+      <app-spinner [smallSpinner]="false"></app-spinner>
+    </div>
+    <ng-container *ngIf="!fetchingOrders">
+      <div class="your-order-card" *ngFor="let order of allOrders">
+        <div class="person-name">{{ order.user.name }}</div>
+        <div class="dish-name">{{ order.dish.name }}</div>
+      </div>
+    </ng-container>
+  </div>
+</div>
