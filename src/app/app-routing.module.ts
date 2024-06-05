@@ -15,8 +15,8 @@ const routes: Routes = [
     path: 'main',
     component: MainComponent,
     children: [
-      { path: '', component: HomeComponent },
-      { path: 'home', component: HomeComponent },
+      { path: '', component: MenuComponent },
+      { path: 'menu', component: MenuComponent },
       { path: 'admin', component: AdminComponent, canActivate: [canActivate] },
       { path: 'order', component: YourOrderComponent },
       { path: 'menu', component: MenuComponent },

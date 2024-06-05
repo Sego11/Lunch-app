@@ -3,10 +3,8 @@
     <img src="assets/nasco.png" alt="NASCOTECH LOGO" />
   </div>
   <ul class="navbar-menu">
-    <li><a routerLink="home">HOME</a></li>
     <li><a routerLink="menu">MENU</a></li>
-    <li><a routerLink="order">YOUR ORDER</a></li>
-    <li><a routerLink="admin">ADMIN</a></li>
+    <li><a routerLink="admin" *ngIf="isAdmin">ADMIN</a></li>
     <li><a href="" (click)="logout()">LOGOUT</a></li>
   </ul>
 </nav>

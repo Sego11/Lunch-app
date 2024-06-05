@@ -1,4 +1,8 @@
-import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  Router,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { inject } from '@angular/core';
 import { InitializationService } from '../services/initialization.service';
 import { Observable, map } from 'rxjs';
@@ -10,13 +14,14 @@ export const canActivate = (
   const initializationService: InitializationService = inject(
     InitializationService
   );
+  const route: Router = inject(Router);
 
   return initializationService.getCurrentUser().pipe(
     map((user) => {
       if (user?.role === 'admin') {
         return true;
       } else {
-        console.log('not an admin wai');
+        route.navigate(['main']);
         return false;
       }
     })
