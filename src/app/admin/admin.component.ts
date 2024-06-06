@@ -17,10 +17,16 @@ export class AdminComponent implements OnInit {
 
   allOrders: Order[] = [];
   allDishes: Dish[] = [];
-  name = '';
-  day = '';
   fetchingDishes: boolean = false;
   fetchingOrders: boolean = false;
+  isCreateDishPressed: boolean = false;
+  selectedDish: Dish | undefined = undefined;
+  selectedDishId: string | undefined = '';
+  editMode: boolean = false;
+  showToast: boolean = false;
+  toastMessage: string = '';
+  isToastSuccess: boolean = true;
+  loadingDishIds: Set<string> = new Set();
 
   ngOnInit(): void {
     this.getAllOrders();
@@ -35,8 +41,10 @@ export class AdminComponent implements OnInit {
         this.allOrders = orders;
       },
       error: (error) => {
-        this.fetchingOrders = false;
-        console.log(error.error.message);
+        setTimeout(() => {
+          this.fetchingOrders = false;
+          this.showToastMessage(error.error.message, false);
+        }, 2000);
       },
     });
   }
@@ -44,10 +52,15 @@ export class AdminComponent implements OnInit {
   deleteAllOrders() {
     this.orderService.deleteAllOrders().subscribe({
       next: () => {
-        console.log(' deleted all order successfully');
+        setTimeout(() => {
+          this.showToastMessage('deleted all orders successfully', true);
+        }, 2000);
+        this.getAllOrders();
       },
       error: (error) => {
-        console.log(error.error.message);
+        setTimeout(() => {
+          this.showToastMessage(error.error.message, false);
+        }, 2000);
       },
     });
   }
@@ -60,42 +73,107 @@ export class AdminComponent implements OnInit {
         this.allDishes = dishes;
       },
       error: (error) => {
-        this.fetchingDishes = false;
-        console.log(error.error.message);
+        setTimeout(() => {
+          this.fetchingDishes = false;
+          this.showToastMessage(error.error.message, false);
+        }, 2000);
       },
     });
   }
 
-  createDish() {
-    this.dishService.CreateDish(this.name, this.day).subscribe({
+  createDish(data: Dish) {
+    this.dishService.CreateDish(data).subscribe({
       next: (dish: Dish) => {
-        console.log(dish);
+        setTimeout(() => {
+          this.showToastMessage('Dish successfully created', true);
+        }, 2000);
+        this.getAllDishes();
       },
       error: (error) => {
-        console.log(error.error.message);
+        setTimeout(() => {
+          this.showToastMessage(error.error.message, false);
+        }, 2000);
       },
     });
   }
 
-  updateDish(id: string) {
-    this.dishService.UpdateDish(id, this.name).subscribe({
-      next: (data: Dish) => {
-        console.log(data);
+  updateDish(id: string, data: Dish) {
+    this.dishService.UpdateDish(id, data).subscribe({
+      next: () => {
+        setTimeout(() => {
+          this.showToastMessage('Dish successfully updated', true);
+        }, 2000);
+        this.getAllDishes();
       },
       error: (error) => {
-        console.log(error.error.message);
+        setTimeout(() => {
+          this.showToastMessage(error.error.message, false);
+        }, 2000);
       },
     });
   }
 
   deleteDish(id: string) {
+    this.selectedDishId = id;
+    this.loadingDishIds.add(id);
+
     this.dishService.DeleteDish(id).subscribe({
-      next: (data) => {
-        console.log(data);
+      next: () => {
+        setTimeout(() => {
+          this.loadingDishIds.delete(id);
+          this.showToastMessage('Dish successfully deleted', true);
+        }, 2000);
+        this.getAllDishes();
       },
       error: (error) => {
-        console.log(error);
+        setTimeout(() => {
+          this.loadingDishIds.delete(id);
+          this.showToastMessage(error.error.message, false);
+        }, 2000);
       },
     });
+  }
+
+  openCreateDishForm() {
+    this.isCreateDishPressed = true;
+    this.editMode = false;
+    this.selectedDish = { _id: '', name: '', day: '' };
+  }
+
+  onCloseCreateDishFrom() {
+    this.isCreateDishPressed = false;
+  }
+
+  onEditDishClicked(id: string | undefined) {
+    this.selectedDishId = id;
+
+    this.isCreateDishPressed = true;
+    this.editMode = true;
+
+    this.selectedDish = this.allDishes.find((dish) => {
+      return dish._id === id;
+    });
+  }
+
+  createOrEditDish(data: Dish) {
+    if (!this.editMode) {
+      this.createDish(data);
+    } else {
+      if (this.selectedDishId) this.updateDish(this.selectedDishId, data);
+    }
+  }
+
+  showToastMessage(message: string, isSuccess: boolean) {
+    this.toastMessage = message;
+    this.isToastSuccess = isSuccess;
+    this.showToast = true;
+
+    setTimeout(() => {
+      this.showToast = false;
+    }, 3000);
+  }
+
+  isDishLoading(id: string): boolean {
+    return this.loadingDishIds.has(id);
   }
 }

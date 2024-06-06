@@ -27,12 +27,7 @@ export class DishService {
   }
 
   //create dish
-  CreateDish(name: string, day: string): Observable<Dish> {
-    const data = {
-      name: name,
-      day: day,
-    };
-
+  CreateDish(data: Dish): Observable<Dish> {
     return this.http.post<any>(`${baseUrl}dishes`, data).pipe(
       catchError((err) => {
         return throwError(() => err);
@@ -41,12 +36,7 @@ export class DishService {
   }
 
   //update dish
-  UpdateDish(id: string, name?: string, day?: string): Observable<Dish> {
-    const data = {
-      name: name,
-      day: day,
-    };
-
+  UpdateDish(id: string, data: Dish): Observable<Dish> {
     return this.http.patch<any>(`${baseUrl}dishes/${id}`, data).pipe(
       catchError((err) => {
         return throwError(() => err);

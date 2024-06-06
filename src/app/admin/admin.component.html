@@ -4,16 +4,58 @@
       <h2>Admin Dashboard</h2>
     </div>
     <div>
-      <button type="button" class="admin-container-header-button">
+      <button
+        type="button"
+        class="admin-container-header-button"
+        (click)="openCreateDishForm()"
+      >
         Create Dish
       </button>
-      <button type="button" class="admin-container-header-button">
+      <button
+        type="button"
+        class="admin-container-header-button"
+        (click)="deleteAllOrders()"
+      >
         Clear Orders
       </button>
     </div>
   </div>
   <hr />
-  <div class="admin-dish-container">
+  <app-toast
+    [show]="showToast"
+    [message]="toastMessage"
+    [isSuccess]="isToastSuccess"
+  ></app-toast>
+
+  <div class="create-dish-form">
+    <app-create-dish
+      *ngIf="isCreateDishPressed"
+      (closeForm)="onCloseCreateDishFrom()"
+      (emitDishData)="createOrEditDish($event)"
+      [isEditMode]="editMode"
+      [selectedDish]="selectedDish"
+    ></app-create-dish>
+  </div>
+
+  <div class="admin-dish-container" *ngIf="!isCreateDishPressed">
+    <div class="spinner-container" *ngIf="fetchingOrders">
+      <app-spinner [smallSpinner]="false"></app-spinner>
+    </div>
+    <div
+      class="no-orders-container"
+      *ngIf="allOrders.length < 1 && !fetchingOrders"
+    >
+      <h2>No Orders available</h2>
+    </div>
+    <ng-container *ngIf="!fetchingOrders">
+      <div class="your-order-card" *ngFor="let order of allOrders">
+        <div class="person-name">{{ order.user.name }}</div>
+        <div class="dish-name">{{ order.dish.name }}</div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="admin-dish-container" *ngIf="!isCreateDishPressed">
     <div class="spinner-container" *ngIf="fetchingDishes">
       <app-spinner [smallSpinner]="false"></app-spinner>
     </div>
@@ -23,22 +65,16 @@
           <h3 class="dish-card-day">{{ dish.day }}</h3>
           <h3 class="dish-card-name">{{ dish.name }}</h3>
           <div class="dish-card-button">
-            <button type="button">Edit Dish</button>
-            <button type="button">Delete Dish</button>
+            <button type="button" (click)="onEditDishClicked(dish._id)">
+              Edit Dish
+            </button>
+            <button type="button" (click)="deleteDish(dish._id)">
+              <span *ngIf="!isDishLoading(dish._id)"> Delete Dish</span>
+
+              <app-spinner *ngIf="isDishLoading(dish._id)"></app-spinner>
+            </button>
           </div>
         </div>
-      </div>
-    </ng-container>
-  </div>
-
-  <div class="admin-dish-container">
-    <div class="spinner-container" *ngIf="fetchingOrders">
-      <app-spinner [smallSpinner]="false"></app-spinner>
-    </div>
-    <ng-container *ngIf="!fetchingOrders">
-      <div class="your-order-card" *ngFor="let order of allOrders">
-        <div class="person-name">{{ order.user.name }}</div>
-        <div class="dish-name">{{ order.dish.name }}</div>
       </div>
     </ng-container>
   </div>

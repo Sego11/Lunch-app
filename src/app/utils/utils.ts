@@ -15,7 +15,7 @@ export function getTodayName(date: Date): string {
   let dayIndex = date.getDay();
   const hour = date.getHours();
 
-  if (hour >= 12) {
+  if (hour >= 11) {
     dayIndex = (dayIndex + 1) % 7;
   }
 

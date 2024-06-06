@@ -70,7 +70,7 @@ export class YourOrderComponent implements OnInit, OnDestroy {
 
   deleteOrder() {
     this.isLoading = true;
-    if (this.order)
+    if (this.order) {
       this.orderService.deleteOrder(this.order._id).subscribe({
         next: () => {
           this.isLoading = false;
@@ -82,5 +82,8 @@ export class YourOrderComponent implements OnInit, OnDestroy {
           console.log(error.error.message);
         },
       });
+    } else {
+      this.isLoading = false;
+    }
   }
 }

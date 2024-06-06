@@ -1,1 +1,40 @@
-<p>create-dish works!</p>
+<div class="create-dish-container">
+  <div class="close-button">
+    <button type="button" (click)="onCloseForm()">&times;</button>
+  </div>
+
+  <h3>{{ isEditMode ? "Edit Dish" : "Create Dish" }}</h3>
+  <form
+    autocomplete="off"
+    #dishForm="ngForm"
+    (ngSubmit)="onFormSubmit(dishForm)"
+  >
+    <div class="form-group">
+      <input
+        type="name"
+        id="day"
+        placeholder="Day"
+        autocomplete="off"
+        name="day"
+        ngModel
+      />
+    </div>
+    <div class="form-group">
+      <input
+        type="name"
+        id="name"
+        placeholder="Name"
+        autocomplete="off"
+        name="name"
+        ngModel
+      />
+    </div>
+
+    <button class="done-button" type="submit">
+      <span *ngIf="!isLoading">
+        {{ isEditMode ? "Edit Dish" : "Create Dish" }}</span
+      >
+      <app-spinner *ngIf="isLoading"></app-spinner>
+    </button>
+  </form>
+</div>
