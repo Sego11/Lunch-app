@@ -37,6 +37,7 @@
     ></app-create-dish>
   </div>
 
+  <h3>Orders</h3>
   <div class="admin-dish-container" *ngIf="!isCreateDishPressed">
     <div class="spinner-container" *ngIf="fetchingOrders">
       <app-spinner [smallSpinner]="false"></app-spinner>
@@ -55,6 +56,7 @@
     </ng-container>
   </div>
 
+  <h3>Dishes</h3>
   <div class="admin-dish-container" *ngIf="!isCreateDishPressed">
     <div class="spinner-container" *ngIf="fetchingDishes">
       <app-spinner [smallSpinner]="false"></app-spinner>

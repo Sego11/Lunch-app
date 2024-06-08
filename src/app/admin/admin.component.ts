@@ -92,7 +92,7 @@ export class AdminComponent implements OnInit {
       error: (error) => {
         setTimeout(() => {
           this.showToastMessage(error.error.message, false);
-        }, 2000);
+        }, 5000);
       },
     });
   }
