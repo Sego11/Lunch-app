@@ -16,14 +16,14 @@ export class DishService {
     let params = new HttpParams();
     if (day) params = params.append('day', day);
 
-    return this.http.get<any>(`${baseUrl}dishes`, { params }).pipe(
-      map((response) => {
-        return response.data.dishes as Dish[];
-      }),
-      catchError((err) => {
-        return throwError(() => err);
-      })
-    );
+    return this.http
+      .get<{ data: { dishes: Dish[] } }>(`${baseUrl}dishes`, { params })
+      .pipe(
+        map((response) => response.data.dishes as Dish[]),
+        catchError((err) => {
+          return throwError(() => err);
+        })
+      );
   }
 
   //create dish
